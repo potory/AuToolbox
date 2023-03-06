@@ -1,0 +1,6 @@
+[submodule "Plugins/ConsoleFramework"]
+	path = Plugins/ConsoleFramework
+	url = https://github.com/potory/ConsoleFramework.git
+[submodule "Plugins/Prompthing"]
+	path = Plugins/Prompthing
+	url = https://github.com/potory/Prompthing.git
