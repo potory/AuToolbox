@@ -27,12 +27,12 @@ public class PromptGenerateCommand : ICommand
         StringBuilder sb = new StringBuilder();
         string json = File.ReadAllText(DatasetPath);
 
-        var templates = new DatasetCompiler().Compile(json);
+        var dataset = new DatasetCompiler().Compile(json);
         int count = Count ?? 1;
 
         for (int i = 0; i < count; i++)
         {
-            var template = templates.OneOf();
+            var template = dataset.Templates.OneOf();
             template.Node.Evaluate(sb);
 
             sb.Append('\n');
