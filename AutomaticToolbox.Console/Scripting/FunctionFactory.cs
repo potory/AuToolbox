@@ -23,6 +23,8 @@ public class FunctionFactory
             "eight" => new EightFunction(),
             "int" => new IntFunction(),
             "replace" => new ReplaceFunction(),
+            "lineFrom" => new LineFromFunction(),
+            "oneOf" => new LineFromFunction(),
             _ => throw new ArgumentException($"Unknown function '{functionName}'")
         };
     }
