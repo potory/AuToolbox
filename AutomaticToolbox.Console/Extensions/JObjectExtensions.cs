@@ -14,4 +14,7 @@ public static class JObjectExtensions
             }
         }
     }
+
+    public static T[] ToArrayOf<T>(this JArray array) => 
+        array.Select(x => x.Value<T>()).ToArray();
 }
