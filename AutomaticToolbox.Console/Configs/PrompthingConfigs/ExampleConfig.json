@@ -1,0 +1,31 @@
+﻿{
+  "templates": [
+    {
+      "name": "sourceTemplate",
+      "isSnippet": false,
+      "template": "a {{gender}} standing in {{#t:location}} holding {{item}}"
+    },
+    {
+      "name": "location",
+      "isSnippet": true,
+      "template": "template value 1"
+    }
+  ],
+  "wrappers": [],
+  "categories": [
+    {
+      "name": "gender",
+      "values": [
+        "value 1",
+        "value 2"
+      ]
+    },
+    {
+      "name": "item",
+      "values": [
+        "value 1",
+        "value 2"
+      ]
+    }
+  ]
+}

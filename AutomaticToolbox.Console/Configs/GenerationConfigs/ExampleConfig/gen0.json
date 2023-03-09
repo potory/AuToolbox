@@ -1,0 +1,5 @@
+﻿{
+  "prompt": "#replace(#source(), 'default', 'modified')",
+  "width": 512,
+  "height": 640
+}
