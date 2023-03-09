@@ -16,7 +16,7 @@ public class FunctionFactory
     {
         return functionName.ToLower() switch
         {
-            "prompthing" => GetPrompthingFunction(functionName),
+            "prompthing" => GetFunction(functionName),
             "source" => new SourceFunction(_context),
             "mult" => new MultFunction(),
             "multiply" => new MultFunction(),
@@ -29,8 +29,10 @@ public class FunctionFactory
         };
     }
 
-    private Function GetPrompthingFunction(string functionName)
+    private Function GetFunction(string functionName)
     {
+        // TODO: Переделать все запросы на кэширование функций, сделать создание через внедрение зависимостей
+
         if (_cache.TryGetValue(functionName, out var func))
             return func;
 
