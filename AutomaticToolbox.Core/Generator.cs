@@ -19,6 +19,7 @@ public class Generator
         _ip = ip;
         _outputPath = outputPath;
         _client = new HttpClient();
+        _client.Timeout = TimeSpan.FromMinutes(5);
     }
     
     public void Run(string configPath, int count)
