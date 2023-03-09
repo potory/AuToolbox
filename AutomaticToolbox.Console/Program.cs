@@ -11,5 +11,6 @@ var app = new CliApplication(welcomeMessage);
 
 app.RegisterCommand<PromptGenerateCommand>();
 app.RegisterCommand<PromptTemplateCommand>();
+app.RegisterCommand<ImagesGenerateCommand>();
 
 app.Run(args);
