@@ -1,4 +1,4 @@
-﻿[
-  "ExampleConfig/gen0.json",
-  "ExampleConfig/gen1.json"
-]
+﻿{
+  "epoch0":"ExampleConfig/gen0.json",
+  "epoch1":"ExampleConfig/gen1.json"
+}
