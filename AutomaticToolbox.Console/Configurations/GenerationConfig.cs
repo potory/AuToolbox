@@ -5,18 +5,34 @@ namespace AutomaticToolbox.Console.Configurations;
 
 public class GenerationConfig
 {
-    private readonly OverrideConfig[] _overrides;
+    private const string DefaultTextToImagePath = "Defaults/DefaultTextToImageRequest.json";
+    private const string DefaultImageToImagePath = "Defaults/DefaultImageToImageRequest.json";
+
+    private readonly Config[] _defaults;
+    private readonly Config[] _overrides;
+
+    public Config DefaultTextToImage => _defaults[0];
+    public Config DefaultImageToImage => _defaults[1];
+
     public GenerationConfig(string path)
     {
         var parentDirectory = GetParentDirectory(path);
         var configsPaths = GetConfigsPaths(path);
 
         _overrides = CreateOverrides(parentDirectory, configsPaths);
+        _defaults = new[]
+        {
+            GetConfig(DefaultTextToImagePath),
+            GetConfig(DefaultImageToImagePath)
+        };
     }
 
-    private static OverrideConfig[] CreateOverrides(string parentDirectory, IReadOnlyList<string> configsPaths)
+    public Config OverridesFor(int iteration) => 
+        _overrides[iteration];
+
+    private static Config[] CreateOverrides(string parentDirectory, IReadOnlyList<string> configsPaths)
     {
-        var overrides = new OverrideConfig[configsPaths.Count];
+        var overrides = new Config[configsPaths.Count];
 
         for (int index = 0; index < configsPaths.Count; index++)
         {
@@ -33,7 +49,7 @@ public class GenerationConfig
     private static string GetParentDirectory(string path) => 
         Path.GetDirectoryName(Path.GetFullPath(path));
 
-    private static OverrideConfig GetConfig(string configPath) => 
+    private static Config GetConfig(string configPath) => 
         new(JObject.Parse(File.ReadAllText(configPath)));
 
     private static string[] GetConfigsPaths(string path) => 

@@ -2,11 +2,11 @@
 
 namespace AutomaticToolbox.Console.Configurations;
 
-public class OverrideConfig
+public class Config
 {
     public JObject Json { get; }
 
-    public OverrideConfig(JObject json)
+    public Config(JObject json)
     {
         Json = json;
     }
