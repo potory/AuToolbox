@@ -1,5 +1,5 @@
 ﻿using System.Text;
-using AutomaticToolbox.Console.Extensions;
+using AutomaticToolbox.Core.Extensions;
 using ConsoleFramework;
 using ConsoleFramework.Attributes;
 using Prompthing.Core.Templates;

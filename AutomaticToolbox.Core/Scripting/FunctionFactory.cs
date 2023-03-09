@@ -1,6 +1,6 @@
-﻿using AutomaticToolbox.Console.Scripting.Functions;
+﻿using AutomaticToolbox.Core.Scripting.Functions;
 
-namespace AutomaticToolbox.Console.Scripting;
+namespace AutomaticToolbox.Core.Scripting;
 
 public class FunctionFactory
 {
@@ -25,6 +25,7 @@ public class FunctionFactory
             "replace" => new ReplaceFunction(),
             "lineFrom" => new LineFromFunction(),
             "oneOf" => new LineFromFunction(),
+            "append" => new AppendFunction(),
             _ => throw new ArgumentException($"Unknown function '{functionName}'")
         };
     }

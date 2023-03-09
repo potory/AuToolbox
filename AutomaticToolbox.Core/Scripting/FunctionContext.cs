@@ -1,4 +1,4 @@
-﻿namespace AutomaticToolbox.Console.Scripting;
+﻿namespace AutomaticToolbox.Core.Scripting;
 
 public class FunctionContext
 {

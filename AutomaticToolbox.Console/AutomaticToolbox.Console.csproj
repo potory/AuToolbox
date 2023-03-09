@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\AutomaticToolbox.Core\AutomaticToolbox.Core.csproj" />
       <ProjectReference Include="..\Plugins\ConsoleFramework\ConsoleFramework\ConsoleFramework.csproj" />
       <ProjectReference Include="..\Plugins\Prompthing\Prompthing.Core\Prompthing.Core.csproj" />
     </ItemGroup>
@@ -18,24 +19,6 @@
 
     <ItemGroup>
       <None Update="Examples\Example.json">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="Defaults\DefaultTextToImageRequest.json">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="Defaults\DefaultImageToImageRequest.json">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="Configs\PrompthingConfigs\ExampleConfig.json">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="Configs\GenerationConfigs\ExampleConfig\gen0.json">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="Configs\GenerationConfigs\ExampleConfig\gen1.json">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="Configs\GenerationConfigs\example.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>

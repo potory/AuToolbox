@@ -1,4 +1,4 @@
-﻿namespace AutomaticToolbox.Console.Scripting.Functions;
+﻿namespace AutomaticToolbox.Core.Scripting.Functions;
 
 public class SourceFunction : Function
 {

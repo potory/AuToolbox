@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace AutomaticToolbox.Console.Scripting.Functions;
+namespace AutomaticToolbox.Core.Scripting.Functions;
 
 public abstract class Function
 {

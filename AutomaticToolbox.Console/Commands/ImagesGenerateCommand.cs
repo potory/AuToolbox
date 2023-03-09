@@ -1,4 +1,5 @@
-﻿using ConsoleFramework;
+﻿using AutomaticToolbox.Core;
+using ConsoleFramework;
 using ConsoleFramework.Attributes;
 
 namespace AutomaticToolbox.Console.Commands;

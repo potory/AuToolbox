@@ -1,7 +1,7 @@
-﻿using AutomaticToolbox.Console.Scripting;
+﻿using AutomaticToolbox.Core.Scripting;
 using Newtonsoft.Json.Linq;
 
-namespace AutomaticToolbox.Console.Configurations;
+namespace AutomaticToolbox.Core.Configurations;
 
 public class ConfigMapper
 {

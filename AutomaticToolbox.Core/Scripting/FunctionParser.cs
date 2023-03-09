@@ -1,7 +1,7 @@
-﻿using AutomaticToolbox.Console.Scripting.Functions;
-using AutomaticToolbox.Console.Scripting.Nodes;
+﻿using AutomaticToolbox.Core.Scripting.Functions;
+using AutomaticToolbox.Core.Scripting.Nodes;
 
-namespace AutomaticToolbox.Console.Scripting;
+namespace AutomaticToolbox.Core.Scripting;
 
 public class FunctionParser
 {

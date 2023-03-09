@@ -1,8 +1,8 @@
-﻿using AutomaticToolbox.Console.Configurations;
-using AutomaticToolbox.Console.Extensions;
+﻿using AutomaticToolbox.Core.Configurations;
+using AutomaticToolbox.Core.Extensions;
 using Newtonsoft.Json.Linq;
 
-namespace AutomaticToolbox.Console;
+namespace AutomaticToolbox.Core;
 
 public class Generator
 {
@@ -30,8 +30,12 @@ public class Generator
 
         for (int iteration = 0; iteration < maxIteration; iteration++)
         {
+            System.Console.WriteLine($"Starting iteration {config.IterationsNames[iteration]}");
+
             for (var imageIndex = 0; imageIndex < configs.Length; imageIndex++)
             {
+                System.Console.WriteLine($"Processing image {imageIndex+1} for iteration {config.IterationsNames[iteration]}");
+
                 var request = configs[imageIndex];
                 var overrides = config.OverridesFor(iteration).Clone();
 
@@ -44,17 +48,19 @@ public class Generator
                 var savePath = Path.Combine(Path.GetFullPath(_outputPath), config.IterationsNames[iteration], GetImageName(imageIndex));
 
                 var directoryName = Path.GetDirectoryName(savePath);
-                
+
                 if (!Directory.Exists(directoryName))
                 {
                     Directory.CreateDirectory(directoryName!);
                 }
-                
+
+                System.Console.WriteLine($"Saving image {imageIndex} for iteration {iteration} to {savePath}");
                 File.WriteAllBytes(savePath, Convert.FromBase64String(resultImage));
                 request.SetImagePath(savePath);
             }
         }
     }
+
 
     private string GetResultImage(Config request, Config overrides)
     {

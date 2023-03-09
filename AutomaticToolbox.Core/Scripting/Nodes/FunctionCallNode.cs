@@ -1,6 +1,6 @@
-﻿using AutomaticToolbox.Console.Scripting.Functions;
+﻿using AutomaticToolbox.Core.Scripting.Functions;
 
-namespace AutomaticToolbox.Console.Scripting.Nodes;
+namespace AutomaticToolbox.Core.Scripting.Nodes;
 
 public class FunctionCallNode : FunctionNode
 {

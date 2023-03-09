@@ -1,6 +1,6 @@
-﻿using AutomaticToolbox.Console.Extensions;
+﻿using AutomaticToolbox.Core.Extensions;
 
-namespace AutomaticToolbox.Console.Scripting.Functions;
+namespace AutomaticToolbox.Core.Scripting.Functions;
 
 public class OneOfFunction : Function
 {

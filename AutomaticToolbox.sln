@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleFramework", "Plugins
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prompthing.Core", "Plugins\Prompthing\Prompthing.Core\Prompthing.Core.csproj", "{05556379-D7CA-4670-9B9A-8BCF1EB6BC51}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutomaticToolbox.Core", "AutomaticToolbox.Core\AutomaticToolbox.Core.csproj", "{0DF52A59-D644-4000-BEC6-800E9A8C480F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{05556379-D7CA-4670-9B9A-8BCF1EB6BC51}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05556379-D7CA-4670-9B9A-8BCF1EB6BC51}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05556379-D7CA-4670-9B9A-8BCF1EB6BC51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DF52A59-D644-4000-BEC6-800E9A8C480F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DF52A59-D644-4000-BEC6-800E9A8C480F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DF52A59-D644-4000-BEC6-800E9A8C480F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DF52A59-D644-4000-BEC6-800E9A8C480F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

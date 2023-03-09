@@ -1,4 +1,4 @@
-﻿namespace AutomaticToolbox.Console.Scripting.Nodes;
+﻿namespace AutomaticToolbox.Core.Scripting.Nodes;
 
 public class ValueNode : FunctionNode
 {

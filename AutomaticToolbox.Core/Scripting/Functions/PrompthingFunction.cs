@@ -1,8 +1,8 @@
 ﻿using System.Text;
-using AutomaticToolbox.Console.Extensions;
+using AutomaticToolbox.Core.Extensions;
 using Prompthing.Core.Templates;
 
-namespace AutomaticToolbox.Console.Scripting.Functions;
+namespace AutomaticToolbox.Core.Scripting.Functions;
 
 public class PrompthingFunction : Function
 {
