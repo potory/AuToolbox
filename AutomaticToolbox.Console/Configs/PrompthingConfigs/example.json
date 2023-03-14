@@ -8,23 +8,37 @@
     {
       "name": "location",
       "isSnippet": true,
-      "template": "template value 1"
+      "template": "{{size}} {{place}}"
     }
   ],
   "wrappers": [],
   "categories": [
     {
+      "name": "size",
+      "values": [
+        "a big",
+        "a small"
+      ]
+    },
+    {
+      "name": "place",
+      "values": [
+        "park",
+        "house"
+      ]
+    },
+    {
       "name": "gender",
       "values": [
-        "value 1",
-        "value 2"
+        "man",
+        "woman"
       ]
     },
     {
       "name": "item",
       "values": [
-        "value 1",
-        "value 2"
+        "a book",
+        "a smartphone"
       ]
     }
   ]
