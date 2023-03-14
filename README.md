@@ -36,12 +36,12 @@ To generate an image, create a `.json` config file. Here is an example of a simp
     "height": 640
   },
   "iteration2": {
-    "width": 720,
+    "width": 1024,
     "height": 1280
   }
 }
 ```
-In the first iteration, the prompt property is set to `a cat` and `width` and `height` to `512` and `640`, respectively. In the second iteration, the `width` and `height` are changed to `720` and `1280`, respectively.
+In the first iteration, the prompt property is set to `a cat` and `width` and `height` to `512` and `640`, respectively. In the second iteration, the `width` and `height` are changed to `1024` and `1280`, respectively.
 
 > **Warning**<br>
 **AutomaticToolbox** always generates the first iteration image with the `txt2img` algorithm and uses this image as a base for further iterations and `img2img` processing.
