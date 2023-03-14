@@ -27,6 +27,12 @@
       <None Update="Configs\PrompthingConfigs\example.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="Defaults\DefaultImageToImageRequest.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Defaults\DefaultTextToImageRequest.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>
