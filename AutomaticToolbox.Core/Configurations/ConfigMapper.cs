@@ -1,5 +1,6 @@
-﻿using AutomaticToolbox.Core.Scripting;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Linq;
+using SonScript.Core;
 
 namespace AutomaticToolbox.Core.Configurations;
 
@@ -10,10 +11,10 @@ public class ConfigMapper
 
     private Config _source;
 
-    public ConfigMapper()
+    public ConfigMapper(IServiceProvider provider)
     {
-        _context = new FunctionContext();
-        _parser = new FunctionParser(new FunctionFactory(_context));
+        _context = provider.GetService<FunctionContext>();
+        _parser = provider.GetService<FunctionParser>();
     }
 
     public void Map(Config config) => 
@@ -61,7 +62,7 @@ public class ConfigMapper
             return value;
         }
 
-        var func = _parser.Parse(str).First();
+        var func = _parser.Parse(str);
         var obj = func.Evaluate();
 
         return JToken.FromObject(obj);

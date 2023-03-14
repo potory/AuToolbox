@@ -3,7 +3,7 @@
     {
       "name": "sourceTemplate",
       "isSnippet": false,
-      "template": "a {{gender}} standing in {{#t:location}} holding {{item}}"
+      "template": "a {{gender}} standing in #t('location') holding {{item}}"
     },
     {
       "name": "location",

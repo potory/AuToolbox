@@ -1,12 +1,14 @@
 ﻿using AutomaticToolbox.Core;
 using ConsoleFramework;
 using ConsoleFramework.Attributes;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AutomaticToolbox.Console.Commands;
 
 [Command("images-generate", "Generates images using Stable Diffusion AUTOMATIC1111 API")]
 public class ImagesGenerateCommand : ICommand
 {
+    private readonly IServiceProvider _provider;
     private const string DefaultIp = "http://127.0.0.1:7860/";
     private const string DefaultOutput = "Output\\Images";
 
@@ -24,6 +26,9 @@ public class ImagesGenerateCommand : ICommand
     [Argument(Name = "output", Description = "The output directory for generated images. If not provided, the default output directory will be used.", Required = false)]
     [ExampleValue("\"Output\\Images\"")]
     public string Output { get; set; }
+
+    public ImagesGenerateCommand(IServiceProvider provider) => 
+        _provider = provider;
 
     public void Evaluate()
     {
@@ -45,7 +50,7 @@ public class ImagesGenerateCommand : ICommand
             throw new ArgumentException("Count must be a positive integer.");
         }
 
-        var generator = new Generator(ip, output);
+        var generator = ActivatorUtilities.CreateInstance<Generator>(_provider, _provider.GetService<IServiceProvider>(), ip, output);
         generator.Run(ConfigPath, Count);
     }
 }

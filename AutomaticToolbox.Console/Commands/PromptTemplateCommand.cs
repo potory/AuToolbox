@@ -2,6 +2,7 @@
 using AutomaticToolbox.Console.Commands.PromptTemplate;
 using ConsoleFramework;
 using ConsoleFramework.Attributes;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Prompthing.Core;
 using Prompthing.Core.Abstract;
@@ -10,6 +11,7 @@ using Prompthing.Core.Templates;
 using Prompthing.Core.Templates.Nodes;
 using Prompthing.Core.Templates.Nodes.Basic;
 using Prompthing.Core.Utilities;
+using SonScript.Core;
 
 namespace AutomaticToolbox.Console.Commands;
 
@@ -61,8 +63,14 @@ public partial class PromptTemplateCommand : ICommand
 
     private string GenerateTemplateJson(string template)
     {
+        var service = new ServiceCollection()
+            .AddSingleton(x => x)
+            .AddSingleton<FunctionContext>()
+            .AddSingleton<FunctionParser>()
+            .AddSingleton<ReferencePool>();
+        
         var referencePool = new MockReferencePool();
-        var interpreter = new TokenInterpreter(referencePool);
+        var interpreter = new TokenInterpreter(referencePool, new FunctionFactory(service.BuildServiceProvider()));
 
         var rootNode = new ContainerNode();
 
@@ -97,9 +105,6 @@ public partial class PromptTemplateCommand : ICommand
                 case TemplateNode templateNode:
                     fileJson.Templates.Add(CreateTemplateJson(templateNode));
                     break;
-                case WrapperNode wrapperNode:
-                    fileJson.Wrappers.Add(CreateWrapperJson(wrapperNode));
-                    break;
             }
         }
 
@@ -113,16 +118,6 @@ public partial class PromptTemplateCommand : ICommand
             Name = templateNode.Template.Name,
             IsSnippet = templateNode.Template.IsSnippet,
             Template = "template value 1"
-        };
-    }
-
-    private static WrapperJson CreateWrapperJson(WrapperNode wrapperNode)
-    {
-        return new WrapperJson
-        {
-            Name = wrapperNode.Wrapper.Name,
-            Content = "content",
-            Wrapper = "example {{content}} wrapper"
         };
     }
 

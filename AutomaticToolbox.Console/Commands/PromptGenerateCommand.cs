@@ -9,6 +9,8 @@ namespace AutomaticToolbox.Console.Commands;
 [Command(name: "prompt-generate", description: "Generates text prompts")]
 public class PromptGenerateCommand : ICommand
 {
+    private readonly DatasetCompiler _compiler;
+
     [Argument(Name = "datasetPath", Required = true, Description = "The path to the Prompthing JSON dataset.")]
     [ExampleValue("C:\\Datasets\\exampleDataset.json")]
     public string DatasetPath { get; set; }
@@ -20,6 +22,9 @@ public class PromptGenerateCommand : ICommand
     [ExampleValue("C:\\Datasets\\exampleOutput.txt")]
     public string SavePath { get; set; }
 
+    public PromptGenerateCommand(DatasetCompiler compiler) => 
+        _compiler = compiler;
+
     public void Evaluate()
     {
         Validate();
@@ -27,7 +32,7 @@ public class PromptGenerateCommand : ICommand
         StringBuilder sb = new StringBuilder();
         string json = File.ReadAllText(DatasetPath);
 
-        var dataset = new DatasetCompiler().Compile(json);
+        var dataset = _compiler.Compile(json);
         int count = Count ?? 1;
 
         for (int i = 0; i < count; i++)
