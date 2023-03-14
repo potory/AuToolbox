@@ -1,0 +1,45 @@
+﻿{
+  "templates": [
+    {
+      "name": "sourceTemplate",
+      "isSnippet": false,
+      "template": "a {{gender}} standing in #t('location') holding {{item}}"
+    },
+    {
+      "name": "location",
+      "isSnippet": true,
+      "template": "{{size}} {{place}}"
+    }
+  ],
+  "wrappers": [],
+  "categories": [
+    {
+      "name": "size",
+      "values": [
+        "a big",
+        "a small"
+      ]
+    },
+    {
+      "name": "place",
+      "values": [
+        "park",
+        "house"
+      ]
+    },
+    {
+      "name": "gender",
+      "values": [
+        "man",
+        "woman"
+      ]
+    },
+    {
+      "name": "item",
+      "values": [
+        "a book",
+        "a smartphone"
+      ]
+    }
+  ]
+}

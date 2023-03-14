@@ -1,11 +1,11 @@
 ﻿{
-  "epoch0": {
-    "prompt": "#replace(#source(), 'default', 'modified')",
+  "iteration1": {
+    "prompt": "a cat",
     "width": 512,
     "height": 640
   },
-  "epoch1": {
-    "width": 720,
+  "iteration2": {
+    "width": 1024,
     "height": 1280
   }
 }

@@ -10,13 +10,15 @@ public class Generator
     private const string Image2ImageEndpoint = "sdapi/v1/img2img";
     private const string TextToImageEndpoint = "sdapi/v1/txt2img";
 
+    private readonly IServiceProvider _provider;
     private readonly string _ip;
     private readonly string _outputPath;
 
     private readonly HttpClient _client;
 
-    public Generator(string ip, string outputPath)
+    public Generator(IServiceProvider provider, string ip, string outputPath)
     {
+        _provider = provider;
         _ip = ip;
         _outputPath = outputPath;
         _client = new HttpClient();
@@ -134,9 +136,9 @@ public class Generator
         return stream;
     }
 
-    private static void MapRequest(Config request, Config overrides)
+    private void MapRequest(Config request, Config overrides)
     {
-        var mapper = new ConfigMapper();
+        var mapper = new ConfigMapper(_provider);
         mapper.SetSource(request);
         mapper.Map(overrides);
 
