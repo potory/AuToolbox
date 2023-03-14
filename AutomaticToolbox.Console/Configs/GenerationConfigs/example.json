@@ -1,4 +1,11 @@
 ﻿{
-  "epoch0":"ExampleConfig/gen0.json",
-  "epoch1":"ExampleConfig/gen1.json"
+  "epoch0": {
+    "prompt": "#replace(#source(), 'default', 'modified')",
+    "width": 512,
+    "height": 640
+  },
+  "epoch1": {
+    "width": 720,
+    "height": 1280
+  }
 }

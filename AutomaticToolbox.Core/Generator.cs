@@ -1,4 +1,5 @@
-﻿using AutomaticToolbox.Core.Configurations;
+﻿using System.Diagnostics;
+using AutomaticToolbox.Core.Configurations;
 using AutomaticToolbox.Core.Extensions;
 using Newtonsoft.Json.Linq;
 
@@ -24,6 +25,8 @@ public class Generator
     
     public void Run(string configPath, int count)
     {
+        Stopwatch sw = new Stopwatch();
+        
         var config = new GenerationConfig(configPath);
         var configs = CreateConfigs(count, config);
 
@@ -31,11 +34,13 @@ public class Generator
 
         for (int iteration = 0; iteration < maxIteration; iteration++)
         {
-            System.Console.WriteLine($"Starting iteration {config.IterationsNames[iteration]}");
+            double averageTime = -1;
+            Console.WriteLine($"Starting iteration {config.IterationsNames[iteration]}");
 
             for (var imageIndex = 0; imageIndex < configs.Length; imageIndex++)
             {
-                System.Console.WriteLine($"Processing image {imageIndex+1} for iteration {config.IterationsNames[iteration]}");
+                sw.Restart();
+                Console.WriteLine($"Processing image {imageIndex+1} for iteration {config.IterationsNames[iteration]}");
 
                 var request = configs[imageIndex];
                 var overrides = config.OverridesFor(iteration).Clone();
@@ -55,9 +60,25 @@ public class Generator
                     Directory.CreateDirectory(directoryName!);
                 }
 
-                System.Console.WriteLine($"Saving image {imageIndex} for iteration {iteration} to {savePath}");
+                Console.WriteLine($"Saving image {imageIndex} for iteration {iteration} to {savePath}");
                 File.WriteAllBytes(savePath, Convert.FromBase64String(resultImage));
                 request.SetImagePath(savePath);
+                sw.Stop();
+
+                if (imageIndex <= 0)
+                {
+                    continue;
+                }
+
+                double previousMid = averageTime;
+
+                averageTime += sw.Elapsed.Seconds;
+
+                if (previousMid > 0)
+                    averageTime /= 2;
+
+                Console.WriteLine(
+                    $"Expected remaining time for this epoch: {TimeSpan.FromSeconds(averageTime * (configs.Length - imageIndex)).Minutes} minutes");
             }
         }
     }
