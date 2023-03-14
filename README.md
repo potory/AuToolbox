@@ -1,8 +1,27 @@
+
 # AutomaticToolbox
 
 AutomaticToolbox is an open-source C# command-line interface (CLI) application designed to automate the process of generating similar data using the AUTOMATIC1111 Stable Diffusion API. The application utilizes the Prompthing library for generating customized prompts and includes the SonScript macro language for automating tasks.
 
 AutomaticToolbox is primarily designed for generating similar data, which can be used for purposes such as model training or generating regularization images. The CLI interface makes AutomaticToolbox easy to integrate into larger workflows and scripts.
+
+- [AutomaticToolbox](#automatictoolbox)
+    * [Getting started](#getting-started)
+        + [Preparing configs](#preparing-configs)
+        + [Running an application](#running-an-application)
+    * [Available macroses for a config and prompt files](#available-macroses-for-a-config-and-prompt-files)
+        + [#mult](#mult)
+        + [#append](#append)
+        + [#replace](#replace)
+        + [#eight](#eight)
+        + [#oneof](#oneof)
+        + [#linefrom](#linefrom)
+        + [#int](#int)
+        + [#prompthing](#prompthing)
+    * [Config-exclusive macroses](#config-exclusive-macroses)
+        + [#source](#source)
+    * [Prompt-exclusive macroses](#prompt-exclusive-macroses)
+        + [#template](#template)
 
 ## Getting started
 
@@ -50,7 +69,7 @@ AutomaticToolbox.Console.exe images-generate %CONFIG% %COUNT% --output=Output/Im
 8. Run `AUTOMATIC111` and wait for it to initialize.
 9. Run the `run.bat` file and wait for the image generation process to finish. The generated images will be saved in the `Output/Images` directory, in a subdirectory named with the current date and time.
 
-## Available macroses for a config and prompt files:
+## Available macroses for a config and prompt files
 
 ### #mult
 
@@ -131,7 +150,7 @@ This will set the `width` value to `512`.
 
 This compiles templates from the example.json file located in `Configs/PrompthingConfigs/` and randomly selects one of them to generate a prompt.
 
-## Config-exclusive macroses:
+## Config-exclusive macroses
 
 ### #source
 `#source()` can be used to get the value from the same field of the config on a previous iteration. For example:
@@ -145,7 +164,7 @@ This macro does not work for a **Prompthing** templates
 > **Warning**<br>
 Additionally, note that it is not necessary to set value like this manually as every subsequent iteration will use the config file from the previous iteration with all its values.
 
-## Prompt-exclusive macroses:
+## Prompt-exclusive macroses
 
 ### #template
 
