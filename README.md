@@ -37,9 +37,8 @@ AutomaticToolbox.Console.exe images-generate %CONFIG% %COUNT% --output=Output/Im
 ```
 This will set the same value for the width as it was before. 
 > **Warning**<br>
-Additionally, note that it is not necessary to set this value manually as every subsequent iteration will use the config file from the previous iteration with all its values.
+Additionally, note that it is not necessary to set value like this manually as every subsequent iteration will use the config file from the previous iteration with all its values.
 
----
 ### #mult
 
 `#mult()` can be used to multiply values. For example:
@@ -68,3 +67,43 @@ This will add the text ` in a big house` to the end of the source prompt.
 ```
 
 This will replace the word `man` with `woman` in the source prompt.
+
+### #eight
+
+`#eight()` macro can be used to round down a number to the nearest divisor of eight. For example:
+
+```json
+"width": "#eight(514)"
+```
+
+This will set the `width` value to `512`.
+
+### #oneof
+
+`#oneof()` macro can be used to randomly choose one of the given values. For example:
+
+```json
+"prompt": "#oneof('a cat', 'a dog', 'a crow')"
+```
+
+This will randomly set the prompt value to either `a cat`, `a dog`, or `a crow`.
+
+### #linefrom
+
+`#linefrom()` macro can be used to randomly choose one of the lines from a specified file. For example:
+
+```json
+"prompt": "#linefrom('example.txt')"
+```
+
+This will randomly set the `prompt` value to one of the lines from an `example.txt` file, which is located in the same directory as the `AutomaticToolbox.Console.exe` file.
+
+### #int
+
+`#int()` macro can be used to round down a fractional number to an integer. For example:
+
+```json
+"width": "#int(512.55)"
+```
+
+This will set the `width` value to `512`.
