@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics;
-using AutomaticToolbox.Core.Configurations;
-using AutomaticToolbox.Core.Extensions;
+using AuToolbox.Core.Extensions;
+using AuToolbox.Core.Configurations;
 using Newtonsoft.Json.Linq;
 
-namespace AutomaticToolbox.Core;
+namespace AuToolbox.Core;
 
 public class Generator
 {

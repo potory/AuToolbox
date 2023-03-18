@@ -1,10 +1,10 @@
 ﻿using System.Text;
-using AutomaticToolbox.Core.Extensions;
+using AuToolbox.Core.Extensions;
 using ConsoleFramework;
 using ConsoleFramework.Attributes;
 using Prompthing.Core.Templates;
 
-namespace AutomaticToolbox.Console.Commands;
+namespace AuToolbox.Console.Commands;
 
 [Command(name: "prompt-generate", description: "Generates text prompts")]
 public class PromptGenerateCommand : ICommand

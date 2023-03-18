@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 
-namespace AutomaticToolbox.Core.Extensions;
+namespace AuToolbox.Core.Extensions;
 
 public static class JObjectExtensions
 {

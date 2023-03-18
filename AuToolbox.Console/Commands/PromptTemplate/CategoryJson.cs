@@ -1,7 +1,7 @@
 ﻿
 using Newtonsoft.Json;
 
-namespace AutomaticToolbox.Console.Commands.PromptTemplate;
+namespace AuToolbox.Console.Commands.PromptTemplate;
 
 [Serializable]
 internal class CategoryJson
