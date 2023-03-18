@@ -1,11 +1,11 @@
 
-# AutomaticToolbox
+# AuToolbox
 
-AutomaticToolbox is an open-source C# command-line interface (CLI) application designed to automate the process of generating similar image data using the AUTOMATIC1111 Stable Diffusion API. The application utilizes the Prompthing library for generating customized prompts and includes the SonScript macro engine for automating tasks.
+AuToolbox is an open-source C# command-line interface (CLI) application designed to automate the process of generating similar image data using the AUTOMATIC1111 Stable Diffusion API. The application utilizes the Prompthing library for generating customized prompts and includes the SonScript macro engine for automating tasks.
 
-AutomaticToolbox is primarily designed for generating similar data, which can be used for purposes such as model training or generating regularization images. The CLI interface makes AutomaticToolbox easy to integrate into larger workflows and scripts.
+AuToolbox is primarily designed for generating similar data, which can be used for purposes such as model training or generating regularization images. The CLI interface makes AuToolbox easy to integrate into larger workflows and scripts.
 
-- [AutomaticToolbox](#automatictoolbox)
+- [AuToolbox](#AuToolbox)
     * [Getting started](#getting-started)
         + [Preparing configs](#preparing-configs)
         + [Running an application](#running-an-application)
@@ -44,12 +44,12 @@ To generate an image, create a `.json` config file. Here is an example of a simp
 In the first iteration, the prompt property is set to `a cat` and `width` and `height` to `512` and `640`, respectively. In the second iteration, the `width` and `height` are changed to `1024` and `1280`, respectively.
 
 > **Warning**<br>
-**AutomaticToolbox** always generates the first iteration image with the `txt2img` algorithm and uses this image as a base for further iterations and `img2img` processing.
+**AuToolbox** always generates the first iteration image with the `txt2img` algorithm and uses this image as a base for further iterations and `img2img` processing.
 
 ### Running an application
 1. Add an `--api` argument to your AUTOMATIC1111 `webui-user.bat` file in a `set COMMANDLINE_ARGS` section
-2. Download the `AutomaticToolbox` application and extract it to a directory on your computer.
-3. Open a text editor and create a new file named `run.bat` in the same directory as the main `AutomaticToolbox.Console.exe` file.
+2. Download the `AuToolbox` application and extract it to a directory on your computer.
+3. Open a text editor and create a new file named `run.bat` in the same directory as the main `AuToolbox.Console.exe` file.
 4. Copy the following code into `run.bat`:
 ```batch
 set CONFIG=Configs/GenerationConfigs/example.json
@@ -61,7 +61,7 @@ set COUNT=5
 For /f "delims=" %%A in ('powershell get-date -format "{yyyy-MM-dd_HH-mm}"') do @set _dtm=%%A
 Echo The current date/time is: %_dtm%
 
-AutomaticToolbox.Console.exe images-generate %CONFIG% %COUNT% --output=Output/Images/%_dtm%
+AuToolbox.Console.exe images-generate %CONFIG% %COUNT% --output=Output/Images/%_dtm%
 ```
 5. Edit the `CONFIG` variable to point to your desired configuration file. The example above assumes that you have a `GenerationConfigs` directory in the same directory as the `run.bat` file, and that you have an `example.json` file inside that directory.
 6. Edit the `COUNT` variable to set the number of images you want to generate.
@@ -128,7 +128,7 @@ This will randomly set the prompt value to either `a cat`, `a dog`, or `a crow`.
 "prompt": "#linefrom('example.txt')"
 ```
 
-This will randomly set the `prompt` value to one of the lines from an `example.txt` file, which is located in the same directory as the `AutomaticToolbox.Console.exe` file.
+This will randomly set the `prompt` value to one of the lines from an `example.txt` file, which is located in the same directory as the `AuToolbox.Console.exe` file.
 
 ### #int
 

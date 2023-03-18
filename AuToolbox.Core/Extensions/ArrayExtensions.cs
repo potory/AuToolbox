@@ -1,4 +1,4 @@
-﻿namespace AutomaticToolbox.Core.Extensions;
+﻿namespace AuToolbox.Core.Extensions;
 
 public static class ArrayExtensions
 {

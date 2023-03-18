@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 
-namespace AutomaticToolbox.Core.Configurations;
+namespace AuToolbox.Core.Configurations;
 
 public class Config
 {

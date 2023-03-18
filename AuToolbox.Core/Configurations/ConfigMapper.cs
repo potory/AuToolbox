@@ -2,7 +2,7 @@
 using Newtonsoft.Json.Linq;
 using SonScript.Core;
 
-namespace AutomaticToolbox.Core.Configurations;
+namespace AuToolbox.Core.Configurations;
 
 public class ConfigMapper
 {

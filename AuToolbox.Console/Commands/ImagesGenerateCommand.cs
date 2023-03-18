@@ -1,9 +1,9 @@
-﻿using AutomaticToolbox.Core;
+﻿using AuToolbox.Core;
 using ConsoleFramework;
 using ConsoleFramework.Attributes;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace AutomaticToolbox.Console.Commands;
+namespace AuToolbox.Console.Commands;
 
 [Command("images-generate", "Generates images using Stable Diffusion AUTOMATIC1111 API")]
 public class ImagesGenerateCommand : ICommand

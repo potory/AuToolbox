@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\AutomaticToolbox.Core\AutomaticToolbox.Core.csproj" />
+      <ProjectReference Include="..\AuToolbox.Core\AuToolbox.Core.csproj" />
       <ProjectReference Include="..\Plugins\ConsoleFramework\ConsoleFramework\ConsoleFramework.csproj" />
       <ProjectReference Include="..\Plugins\Prompthing\Prompthing.Core\Prompthing.Core.csproj" />
     </ItemGroup>

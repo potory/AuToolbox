@@ -1,12 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutomaticToolbox.Console", "AutomaticToolbox.Console\AutomaticToolbox.Console.csproj", "{B2CCEB1E-97F5-462D-B88B-238518B35093}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuToolbox.Console", "AuToolbox.Console\AuToolbox.Console.csproj", "{B2CCEB1E-97F5-462D-B88B-238518B35093}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleFramework", "Plugins\ConsoleFramework\ConsoleFramework\ConsoleFramework.csproj", "{7CB1CC2C-8948-486D-8F03-0523FC1EC15C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prompthing.Core", "Plugins\Prompthing\Prompthing.Core\Prompthing.Core.csproj", "{05556379-D7CA-4670-9B9A-8BCF1EB6BC51}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutomaticToolbox.Core", "AutomaticToolbox.Core\AutomaticToolbox.Core.csproj", "{0DF52A59-D644-4000-BEC6-800E9A8C480F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuToolbox.Core", "AuToolbox.Core\AuToolbox.Core.csproj", "{0DF52A59-D644-4000-BEC6-800E9A8C480F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SonScript.Core", "Plugins\Prompthing\Plugins\SonScript\SonScript.Core\SonScript.Core.csproj", "{F683E686-B2D7-4FDE-82E6-87387BB7FE71}"
 EndProject

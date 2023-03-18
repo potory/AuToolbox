@@ -1,5 +1,5 @@
 ﻿using System.Text.RegularExpressions;
-using AutomaticToolbox.Console.Commands.PromptTemplate;
+using AuToolbox.Console.Commands.PromptTemplate;
 using ConsoleFramework;
 using ConsoleFramework.Attributes;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,7 +13,7 @@ using Prompthing.Core.Templates.Nodes.Basic;
 using Prompthing.Core.Utilities;
 using SonScript.Core;
 
-namespace AutomaticToolbox.Console.Commands;
+namespace AuToolbox.Console.Commands;
 
 [Command(name: "prompt-template", description: "Generates an example Prompthing JSON dataset.")]
 public partial class PromptTemplateCommand : ICommand
