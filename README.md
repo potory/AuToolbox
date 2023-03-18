@@ -1,7 +1,7 @@
 
 # AutomaticToolbox
 
-AutomaticToolbox is an open-source C# command-line interface (CLI) application designed to automate the process of generating similar data using the AUTOMATIC1111 Stable Diffusion API. The application utilizes the Prompthing library for generating customized prompts and includes the SonScript macro language for automating tasks.
+AutomaticToolbox is an open-source C# command-line interface (CLI) application designed to automate the process of generating similar image data using the AUTOMATIC1111 Stable Diffusion API. The application utilizes the Prompthing library for generating customized prompts and includes the SonScript macro engine for automating tasks.
 
 AutomaticToolbox is primarily designed for generating similar data, which can be used for purposes such as model training or generating regularization images. The CLI interface makes AutomaticToolbox easy to integrate into larger workflows and scripts.
 
