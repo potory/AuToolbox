@@ -1,7 +1,8 @@
 ﻿using System.Diagnostics;
+using AuToolbox.Core.Abstraction;
 using AuToolbox.Core.Extensions;
 using AuToolbox.Core.Configurations;
-using Newtonsoft.Json.Linq;
+using AuToolbox.Core.Implementations;
 
 namespace AuToolbox.Core;
 
@@ -10,25 +11,29 @@ public class Generator
     private const string Image2ImageEndpoint = "sdapi/v1/img2img";
     private const string TextToImageEndpoint = "sdapi/v1/txt2img";
 
-    private readonly IServiceProvider _provider;
     private readonly string _ip;
     private readonly string _outputPath;
+    
+    private readonly IServiceProvider _provider;
+    private readonly IRequestHandler<string> _requestHandler;
+    private readonly IStreamConverter _streamConverter;
 
-    private readonly HttpClient _client;
+    private readonly IteratedStopwatch _stopwatch;
 
     public Generator(IServiceProvider provider, string ip, string outputPath)
     {
         _provider = provider;
         _ip = ip;
         _outputPath = outputPath;
-        _client = new HttpClient();
-        _client.Timeout = TimeSpan.FromMinutes(5);
+        
+        _requestHandler = new SingleImageRequestHandler();
+        _streamConverter = new StandardStreamConverter();
+
+        _stopwatch = new IteratedStopwatch();
     }
     
     public void Run(string configPath, int count)
     {
-        Stopwatch sw = new Stopwatch();
-        
         var config = new GenerationConfig(configPath);
         var configs = CreateConfigs(count, config);
 
@@ -36,12 +41,12 @@ public class Generator
 
         for (int iteration = 0; iteration < maxIteration; iteration++)
         {
-            double averageTime = -1;
             Console.WriteLine($"Starting iteration {config.IterationsNames[iteration]}");
+
+            _stopwatch.Start(configs.Length);
 
             for (var imageIndex = 0; imageIndex < configs.Length; imageIndex++)
             {
-                sw.Restart();
                 Console.WriteLine($"Processing image {imageIndex+1} for iteration {config.IterationsNames[iteration]}");
 
                 var request = configs[imageIndex];
@@ -65,26 +70,13 @@ public class Generator
                 Console.WriteLine($"Saving image {imageIndex} for iteration {iteration} to {savePath}");
                 File.WriteAllBytes(savePath, Convert.FromBase64String(resultImage));
                 request.SetImagePath(savePath);
-                sw.Stop();
-
-                if (imageIndex <= 0)
-                {
-                    continue;
-                }
-
-                double previousMid = averageTime;
-
-                averageTime += sw.Elapsed.Seconds;
-
-                if (previousMid > 0)
-                    averageTime /= 2;
-
-                Console.WriteLine(
-                    $"Expected remaining time for this epoch: {TimeSpan.FromSeconds(averageTime * (configs.Length - imageIndex)).Minutes} minutes");
+                
+                Console.WriteLine($"Expected remaining time for this epoch: {_stopwatch.RemainingTime.Minutes} minutes");
             }
+            
+            _stopwatch.Stop();
         }
     }
-
 
     private string GetResultImage(Config request, Config overrides)
     {
@@ -95,45 +87,17 @@ public class Generator
 
         if (request.ImagePath != null)
         {
-            stream = RequestToStream(request, request.ImagePath);
-            resultImage = SendRequest(_ip + Image2ImageEndpoint, stream).Result;
+            stream = _streamConverter.RequestToStream(request, request.ImagePath);
+            resultImage = _requestHandler.Send(_ip + Image2ImageEndpoint, stream).Result;
         }
         else
         {
-            stream = RequestToStream(request);
-            resultImage = SendRequest(_ip + TextToImageEndpoint, stream).Result;
+            stream = _streamConverter.RequestToStream(request);
+            resultImage = _requestHandler.Send(_ip + TextToImageEndpoint, stream).Result;
         }
 
         stream.Dispose();
         return resultImage;
-    }
-
-    private static MemoryStream RequestToStream(Config request, string imagePath)
-    {
-        var stream = new MemoryStream();
-        var sw = new StreamWriter(stream);
-        string json = request.Json.ToString();
-
-        sw.Write(json[..^3]);
-        sw.Write(",\r\n  \"init_images\": [\"");
-        sw.Write(GetImageString(imagePath));
-        sw.Write("\"]\r\n}");
-        sw.Flush();
-
-        stream.Seek(0, SeekOrigin.Begin);
-        return stream;
-    }
-
-    private static MemoryStream RequestToStream(Config request)
-    {
-        var stream = new MemoryStream();
-        var sw = new StreamWriter(stream);
-        string json = request.Json.ToString();
-
-        sw.Write(json);
-        sw.Flush();
-        stream.Seek(0, SeekOrigin.Begin);
-        return stream;
     }
 
     private void MapRequest(Config request, Config overrides)
@@ -163,23 +127,6 @@ public class Generator
         defaultImageToImage.Json.CopyExistingFields(request.Json);
         request.UpdateFrom(defaultImageToImage);
     }
-
-    private async Task<string> SendRequest(string address, Stream contentStream)
-    {
-        var content = new StreamContent(contentStream);
-        var resultContent = _client.PostAsync(address, content).Result.Content;
-        var stream = await resultContent.ReadAsStreamAsync();
-
-        using var sr = new StreamReader(stream);
-        var response = await sr.ReadToEndAsync();
-
-        var imageContent = JObject.Parse(response)["images"]![0]!.ToString();
-
-        return imageContent;
-    }
-
-    private static string GetImageString(string imagePath) => 
-        Convert.ToBase64String(File.ReadAllBytes(imagePath));
 
     private static string GetImageName(int imageIndex) => 
         $"{imageIndex+1:0000}.png";
