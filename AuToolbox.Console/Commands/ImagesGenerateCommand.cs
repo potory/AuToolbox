@@ -117,6 +117,8 @@ public class ImagesGenerateCommand : IAsyncCommand
     
     private void MapConfig(Config request, Config overrides)
     {
+        overrides = overrides.Clone();
+
         _mapper.SetSource(request);
         _mapper.Map(overrides);
 
