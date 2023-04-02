@@ -1,4 +1,7 @@
 ﻿using AuToolbox.Core;
+using AuToolbox.Core.Configurations;
+using AuToolbox.Core.Extensions;
+using AuToolbox.Core.Processing;
 using ConsoleFramework.Abstract;
 using ConsoleFramework.Attributes;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,8 +30,13 @@ public class ImagesGenerateCommand : IAsyncCommand
     [ExampleValue("\"Output\\Images\"")]
     public string Output { get; set; }
 
-    public ImagesGenerateCommand(IServiceProvider provider) => 
+    private readonly ConfigMapper _mapper;
+
+    public ImagesGenerateCommand(IServiceProvider provider)
+    {
         _provider = provider;
+        _mapper = new ConfigMapper(provider);
+    }
 
     public async Task EvaluateAsync()
     {
@@ -50,7 +58,51 @@ public class ImagesGenerateCommand : IAsyncCommand
             throw new ArgumentException("Count must be a positive integer.");
         }
 
-        var generator = ActivatorUtilities.CreateInstance<Generator>(_provider, _provider.GetService<IServiceProvider>(), ip, output);
-        await generator.Run(ConfigPath, Count);
+        ImageProcessor generator = ActivatorUtilities.CreateInstance<ImageGenerator>(_provider, ip, output);
+
+        var generationConfig = new GenerationConfig(ConfigPath);
+        var configs = CreateConfigs(Count, generationConfig);
+
+        var overrides = generationConfig.OverridesFor(0);
+
+        foreach (var config in configs)
+        {
+            MapConfig(config, overrides);
+        }
+        
+        await generator.Run(configs);
+
+        for (int iteration = 1; iteration < generationConfig.Iterations; iteration++)
+        {
+            generator = ActivatorUtilities.CreateInstance<ImageTransformer>(_provider, ip, output, iteration);
+            overrides = generationConfig.OverridesFor(iteration);
+            
+            foreach (var config in configs)
+            {
+                MapConfig(config, overrides);
+            }
+
+            await generator.Run(configs);
+        }
+    }
+    
+    private static Config[] CreateConfigs(int count, GenerationConfig config)
+    {
+        var configs = new Config[count];
+
+        for (var index = 0; index < configs.Length; index++)
+        {
+            configs[index] = config.DefaultTextToImage.Clone();
+        }
+
+        return configs;
+    }
+    
+    private void MapConfig(Config request, Config overrides)
+    {
+        _mapper.SetSource(request);
+        _mapper.Map(overrides);
+
+        request.Json.CopyExistingFields(overrides.Json);
     }
 }
