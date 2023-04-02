@@ -41,13 +41,13 @@ public class Generator
 
         for (int iteration = 0; iteration < maxIteration; iteration++)
         {
-            Console.WriteLine($"Starting iteration {config.IterationsNames[iteration]}");
+            Console.WriteLine($"Starting iteration {iteration}");
 
             _stopwatch.Start(configs.Length);
 
             for (var imageIndex = 0; imageIndex < configs.Length; imageIndex++)
             {
-                Console.WriteLine($"Processing image {imageIndex+1} for iteration {config.IterationsNames[iteration]}");
+                Console.WriteLine($"Processing image {imageIndex} for iteration {iteration}");
 
                 var request = configs[imageIndex];
                 var overrides = config.OverridesFor(iteration).Clone();
@@ -58,7 +58,7 @@ public class Generator
                 }
 
                 var resultImage = GetResultImage(request, overrides);
-                var savePath = Path.Combine(Path.GetFullPath(_outputPath), config.IterationsNames[iteration], GetImageName(imageIndex));
+                var savePath = Path.Combine(Path.GetFullPath(_outputPath), iteration.ToString(), GetImageName(imageIndex));
 
                 var directoryName = Path.GetDirectoryName(savePath);
 

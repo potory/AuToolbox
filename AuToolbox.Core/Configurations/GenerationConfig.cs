@@ -10,24 +10,17 @@ public class GenerationConfig
     private readonly Config[] _defaults;
     private readonly Config[] _overrides;
 
-    private readonly string[] _iterationsNames;
-
     public Config DefaultTextToImage => _defaults[0];
     public Config DefaultImageToImage => _defaults[1];
 
     public int Iterations => _overrides.Length;
-    public string[] IterationsNames => _iterationsNames;
 
     public GenerationConfig(string path)
     {
         var parentDirectory = GetParentDirectory(path);
+        var overridesArray = GetOverridesArray(path);
 
-        var props = GetProperties(path);
-        _iterationsNames = GetIterationNames(props);
-        
-        var configsContent = props.Select(x => x.Value).ToArray();
-
-        _overrides = CreateOverrides(parentDirectory, configsContent);
+        _overrides = CreateOverrides(parentDirectory, overridesArray);
         _defaults = new[]
         {
             GetConfig(DefaultTextToImagePath),
@@ -58,15 +51,8 @@ public class GenerationConfig
         return overrides;
     }
 
-    private static string[] GetConfigsPaths(string path, out string[] epochNames)
-    {
-        var props = GetProperties(path);
-        epochNames = GetIterationNames(props);
-        return props.Select(x => x.Value.Value<string>()).ToArray();
-    }
-
-    private static JProperty[] GetProperties(string path) => 
-        JObject.Parse(File.ReadAllText(path)).Properties().ToArray();
+    private static JToken[] GetOverridesArray(string path) => 
+        JArray.Parse(File.ReadAllText(path)).ToArray();
 
     private static string GetFullPath(string parentDirectory, string localPath) => 
         Path.GetFullPath(Path.Combine(parentDirectory!, localPath!));
@@ -76,7 +62,4 @@ public class GenerationConfig
 
     private static Config GetConfig(string configPath) => 
         new(JObject.Parse(File.ReadAllText(configPath)));
-
-    private static string[] GetIterationNames(JProperty[] properties) => 
-        properties.Select(x => x.Name).ToArray();
 }
