@@ -1,4 +1,5 @@
 ﻿using AuToolbox.Core.Configurations;
+using AuToolbox.Core.Extensions;
 using AuToolbox.Core.Implementations;
 
 namespace AuToolbox.Core.Processing;
@@ -62,11 +63,20 @@ public abstract class ImageProcessor
     /// <param name="configs">Array of configurations.</param>
     public async Task Run(Config[] configs)
     {
-        Console.WriteLine("Starting initial generation...");
+        _stopwatch.Start(configs.Length);
 
         for (var index = 0; index < configs.Length; index++)
         {
-            Console.WriteLine($"Generating image {index}...");
+            Console.Clear();
+            Console.WriteLine($"Generating image {index} of iteration {_iteration}...");
+            
+            if (index > 0)
+            {
+                Console.WriteLine(
+                    $"Average time for step of current iteration: {_stopwatch.AverageTime.ToReadableString()}");
+                Console.WriteLine(
+                    $"Remaining time for current iteration: {_stopwatch.RemainingTime.ToReadableString()}");
+            }
         
             var imageConfig = configs[index];
 
@@ -77,9 +87,6 @@ public abstract class ImageProcessor
 
             imageConfig.SetImagePath(savePath);
             _stopwatch.NextIteration();
-
-            Console.WriteLine($"Average time for step of initial generation: {_stopwatch.AverageTime.Seconds} seconds.");
-            Console.WriteLine($"Remaining time for initial generation: {_stopwatch.RemainingTime.Minutes} minutes.");
         }
     }
 

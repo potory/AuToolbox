@@ -2,7 +2,7 @@
 
 namespace AuToolbox.Core.Configurations;
 
-public class GenerationConfig
+public class ConfigsSet
 {
     private const string DefaultTextToImagePath = "Defaults/DefaultTextToImageRequest.json";
     private const string DefaultImageToImagePath = "Defaults/DefaultImageToImageRequest.json";
@@ -15,7 +15,7 @@ public class GenerationConfig
 
     public int Iterations => _overrides.Length;
 
-    public GenerationConfig(string path)
+    public ConfigsSet(string path)
     {
         var parentDirectory = GetParentDirectory(path);
         var overridesArray = GetOverridesArray(path);

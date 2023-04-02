@@ -1,4 +1,5 @@
-﻿using AuToolbox.Core;
+﻿using System.Diagnostics;
+using AuToolbox.Core;
 using AuToolbox.Core.Configurations;
 using AuToolbox.Core.Extensions;
 using AuToolbox.Core.Processing;
@@ -58,25 +59,38 @@ public class ImagesGenerateCommand : IAsyncCommand
             throw new ArgumentException("Count must be a positive integer.");
         }
 
+        Stopwatch sw = new Stopwatch();
+        sw.Start();
+
+        var configsSet = new ConfigsSet(ConfigPath);
+        var imagesConfigs = CreateConfigs(Count, configsSet.DefaultTextToImage);
+        
+        await GenerateImages(ip, output, configsSet, imagesConfigs);
+
+        sw.Stop();
+
+        System.Console.Clear();
+        System.Console.WriteLine(GetCompleteString(), configsSet.Iterations * imagesConfigs.Length, sw.Elapsed.ToReadableString());
+    }
+
+    private async Task GenerateImages(string ip, string output, ConfigsSet configsSet, Config[] configs)
+    {
         ImageProcessor generator = ActivatorUtilities.CreateInstance<ImageGenerator>(_provider, ip, output);
 
-        var generationConfig = new GenerationConfig(ConfigPath);
-        var configs = CreateConfigs(Count, generationConfig);
-
-        var overrides = generationConfig.OverridesFor(0);
+        var overrides = configsSet.OverridesFor(0);
 
         foreach (var config in configs)
         {
             MapConfig(config, overrides);
         }
-        
+
         await generator.Run(configs);
 
-        for (int iteration = 1; iteration < generationConfig.Iterations; iteration++)
+        for (int iteration = 1; iteration < configsSet.Iterations; iteration++)
         {
             generator = ActivatorUtilities.CreateInstance<ImageTransformer>(_provider, ip, output, iteration);
-            overrides = generationConfig.OverridesFor(iteration);
-            
+            overrides = configsSet.OverridesFor(iteration);
+
             foreach (var config in configs)
             {
                 MapConfig(config, overrides);
@@ -85,14 +99,17 @@ public class ImagesGenerateCommand : IAsyncCommand
             await generator.Run(configs);
         }
     }
-    
-    private static Config[] CreateConfigs(int count, GenerationConfig config)
+
+    private static string GetCompleteString() => 
+        "Generation task completed successfully.\n\nTotal images generated: {0}\nTotal time taken: {1}";
+
+    private static Config[] CreateConfigs(int count, Config defaultTextToImage)
     {
         var configs = new Config[count];
 
         for (var index = 0; index < configs.Length; index++)
         {
-            configs[index] = config.DefaultTextToImage.Clone();
+            configs[index] = defaultTextToImage.Clone();
         }
 
         return configs;
