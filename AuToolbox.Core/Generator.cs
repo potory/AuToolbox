@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using AuToolbox.Core.Abstraction;
+﻿using AuToolbox.Core.Abstraction;
 using AuToolbox.Core.Extensions;
 using AuToolbox.Core.Configurations;
 using AuToolbox.Core.Implementations;
@@ -36,41 +35,59 @@ public class Generator
     {
         var generationConfig = new GenerationConfig(configPath);
         var configs = CreateConfigs(count, generationConfig);
+        var maxIteration = generationConfig.Iterations;
 
-        int maxIteration = generationConfig.Iterations;
-
-        for (int iteration = 0; iteration < maxIteration; iteration++)
+        for (var iteration = 0; iteration < maxIteration; iteration++)
         {
             _stopwatch.Start(configs.Length);
             var currentOverride = generationConfig.OverridesFor(iteration);
 
-            for (var index = 0; index < configs.Length; index++)
-            {
-                var overrides = currentOverride.Clone();
-                var imageConfig = configs[index];
+            await ProcessConfigs(configs, iteration, currentOverride, generationConfig);
 
-                if (iteration == 1)
-                {
-                    UpdateToImageToImage(generationConfig, imageConfig);
-                }
-
-                var resultImage = await GetResultImage(imageConfig, overrides);
-                var savePath = Path.Combine(Path.GetFullPath(_outputPath), iteration.ToString(), GetImageName(index));
-
-                var directoryName = Path.GetDirectoryName(savePath);
-
-                if (!Directory.Exists(directoryName))
-                {
-                    Directory.CreateDirectory(directoryName!);
-                }
-                
-                await File.WriteAllBytesAsync(savePath, Convert.FromBase64String(resultImage));
-                imageConfig.SetImagePath(savePath);
-            }
-            
             _stopwatch.Stop();
         }
     }
+
+    private async Task ProcessConfigs(Config[] configs, int iteration, Config currentOverride, GenerationConfig generationConfig)
+    {
+        for (var index = 0; index < configs.Length; index++)
+        {
+            var overrides = currentOverride.Clone();
+            var imageConfig = configs[index];
+
+            if (iteration == 1)
+            {
+                UpdateToImageToImage(generationConfig, imageConfig);
+            }
+
+            var resultImage = await GetResultImage(imageConfig, overrides);
+            var savePath = GetSavePath(_outputPath, iteration, index);
+
+            await WriteResultImageToFile(resultImage, savePath);
+            imageConfig.SetImagePath(savePath);
+            _stopwatch.NextIteration();
+
+            Console.WriteLine($"Average time for step of this generation: {_stopwatch.AverageTime.Seconds} s");
+            Console.WriteLine($"Remaining time for this generation: {_stopwatch.RemainingTime.Minutes} min");
+        }
+    }
+
+    private static string GetSavePath(string outputPath, int iteration, int index)
+    {
+        var savePath = Path.Combine(Path.GetFullPath(outputPath), iteration.ToString(), GetImageName(index));
+        var directoryName = Path.GetDirectoryName(savePath);
+
+        if (!Directory.Exists(directoryName))
+        {
+            Directory.CreateDirectory(directoryName!);
+        }
+
+        return savePath;
+    }
+
+    private static async Task WriteResultImageToFile(string resultImage, string savePath) => 
+        await File.WriteAllBytesAsync(savePath, Convert.FromBase64String(resultImage));
+
 
     private async Task<string> GetResultImage(Config request, Config overrides)
     {
