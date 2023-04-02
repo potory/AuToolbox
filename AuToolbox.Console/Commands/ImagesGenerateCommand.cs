@@ -120,6 +120,6 @@ public class ImagesGenerateCommand : IAsyncCommand
         _mapper.SetSource(request);
         _mapper.Map(overrides);
 
-        request.Json.CopyExistingFields(overrides.Json);
+        request.Json.CopyFields(overrides.Json);
     }
 }
