@@ -32,33 +32,30 @@ public class Generator
         _stopwatch = new IteratedStopwatch();
     }
     
-    public void Run(string configPath, int count)
+    public async Task Run(string configPath, int count)
     {
-        var config = new GenerationConfig(configPath);
-        var configs = CreateConfigs(count, config);
+        var generationConfig = new GenerationConfig(configPath);
+        var configs = CreateConfigs(count, generationConfig);
 
-        int maxIteration = config.Iterations;
+        int maxIteration = generationConfig.Iterations;
 
         for (int iteration = 0; iteration < maxIteration; iteration++)
         {
-            Console.WriteLine($"Starting iteration {iteration}");
-
             _stopwatch.Start(configs.Length);
+            var currentOverride = generationConfig.OverridesFor(iteration);
 
-            for (var imageIndex = 0; imageIndex < configs.Length; imageIndex++)
+            for (var index = 0; index < configs.Length; index++)
             {
-                Console.WriteLine($"Processing image {imageIndex} for iteration {iteration}");
-
-                var request = configs[imageIndex];
-                var overrides = config.OverridesFor(iteration).Clone();
+                var overrides = currentOverride.Clone();
+                var imageConfig = configs[index];
 
                 if (iteration == 1)
                 {
-                    UpdateToImageToImage(config, request);
+                    UpdateToImageToImage(generationConfig, imageConfig);
                 }
 
-                var resultImage = GetResultImage(request, overrides);
-                var savePath = Path.Combine(Path.GetFullPath(_outputPath), iteration.ToString(), GetImageName(imageIndex));
+                var resultImage = await GetResultImage(imageConfig, overrides);
+                var savePath = Path.Combine(Path.GetFullPath(_outputPath), iteration.ToString(), GetImageName(index));
 
                 var directoryName = Path.GetDirectoryName(savePath);
 
@@ -66,19 +63,16 @@ public class Generator
                 {
                     Directory.CreateDirectory(directoryName!);
                 }
-
-                Console.WriteLine($"Saving image {imageIndex} for iteration {iteration} to {savePath}");
-                File.WriteAllBytes(savePath, Convert.FromBase64String(resultImage));
-                request.SetImagePath(savePath);
                 
-                Console.WriteLine($"Expected remaining time for this epoch: {_stopwatch.RemainingTime.Minutes} minutes");
+                await File.WriteAllBytesAsync(savePath, Convert.FromBase64String(resultImage));
+                imageConfig.SetImagePath(savePath);
             }
             
             _stopwatch.Stop();
         }
     }
 
-    private string GetResultImage(Config request, Config overrides)
+    private async Task<string> GetResultImage(Config request, Config overrides)
     {
         MapRequest(request, overrides);
 
@@ -88,15 +82,15 @@ public class Generator
         if (request.ImagePath != null)
         {
             stream = _streamConverter.RequestToStream(request, request.ImagePath);
-            resultImage = _requestHandler.Send(_ip + Image2ImageEndpoint, stream).Result;
+            resultImage = await _requestHandler.Send(_ip + Image2ImageEndpoint, stream);
         }
         else
         {
             stream = _streamConverter.RequestToStream(request);
-            resultImage = _requestHandler.Send(_ip + TextToImageEndpoint, stream).Result;
+            resultImage = await _requestHandler.Send(_ip + TextToImageEndpoint, stream);
         }
 
-        stream.Dispose();
+        await stream.DisposeAsync();
         return resultImage;
     }
 

@@ -1,5 +1,4 @@
 ﻿using AuToolbox.Core;
-using ConsoleFramework;
 using ConsoleFramework.Abstract;
 using ConsoleFramework.Attributes;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace AuToolbox.Console.Commands;
 
 [Command("images-generate", "Generates images using Stable Diffusion AUTOMATIC1111 API")]
-public class ImagesGenerateCommand : ICommand
+public class ImagesGenerateCommand : IAsyncCommand
 {
     private readonly IServiceProvider _provider;
     private const string DefaultIp = "http://127.0.0.1:7860/";
@@ -31,7 +30,7 @@ public class ImagesGenerateCommand : ICommand
     public ImagesGenerateCommand(IServiceProvider provider) => 
         _provider = provider;
 
-    public void Evaluate()
+    public async Task EvaluateAsync()
     {
         var ip = !string.IsNullOrEmpty(Ip) ? Ip : DefaultIp;
         var output = !string.IsNullOrEmpty(Output) ? Output : DefaultOutput;
@@ -52,6 +51,6 @@ public class ImagesGenerateCommand : ICommand
         }
 
         var generator = ActivatorUtilities.CreateInstance<Generator>(_provider, _provider.GetService<IServiceProvider>(), ip, output);
-        generator.Run(ConfigPath, Count);
+        await generator.Run(ConfigPath, Count);
     }
 }
