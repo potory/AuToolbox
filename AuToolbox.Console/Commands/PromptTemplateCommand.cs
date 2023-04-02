@@ -1,6 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using AuToolbox.Console.Commands.PromptTemplate;
 using ConsoleFramework;
+using ConsoleFramework.Abstract;
 using ConsoleFramework.Attributes;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;

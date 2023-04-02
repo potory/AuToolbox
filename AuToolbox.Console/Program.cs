@@ -26,7 +26,7 @@ app.RegisterCommand<PromptGenerateCommand>();
 app.RegisterCommand<PromptTemplateCommand>();
 app.RegisterCommand<ImagesGenerateCommand>();
 
-app.Run(args);
+await app.Run(args);
 
 FunctionFactory CreateFunctionFactory(IServiceProvider serviceProvider)
 {

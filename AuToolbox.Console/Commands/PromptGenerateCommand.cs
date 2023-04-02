@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using AuToolbox.Core.Extensions;
 using ConsoleFramework;
+using ConsoleFramework.Abstract;
 using ConsoleFramework.Attributes;
 using Prompthing.Core.Templates;
 

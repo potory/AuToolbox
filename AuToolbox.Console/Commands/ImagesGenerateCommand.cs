@@ -1,5 +1,6 @@
 ﻿using AuToolbox.Core;
 using ConsoleFramework;
+using ConsoleFramework.Abstract;
 using ConsoleFramework.Attributes;
 using Microsoft.Extensions.DependencyInjection;
 
