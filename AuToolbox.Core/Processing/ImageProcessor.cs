@@ -81,7 +81,8 @@ public abstract class ImageProcessor
 
             imageConfig.SetImagePath(savePath);
             _stopwatch.NextIteration();
-            Progress = (double) index / configs.Length;
+
+            Progress = (double) (index+1) / configs.Length;
         }
     }
 
