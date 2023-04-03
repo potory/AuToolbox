@@ -1,5 +1,4 @@
 ﻿using AuToolbox.Core.Configurations;
-using AuToolbox.Core.Extensions;
 using AuToolbox.Core.Implementations;
 
 namespace AuToolbox.Core.Processing;
@@ -40,6 +39,11 @@ public abstract class ImageProcessor
     protected readonly StandardStreamConverter StreamConverter;
 
     /// <summary>
+    /// The progress of the image processing operation.
+    /// </summary>
+    public double Progress { get; private set; }
+
+    /// <summary>
     /// Initializes a new instance of the ImageProcessor class.
     /// </summary>
     /// <param name="ip">IP address for the image processing server.</param>
@@ -64,20 +68,10 @@ public abstract class ImageProcessor
     public async Task Run(Config[] configs)
     {
         _stopwatch.Start(configs.Length);
+        Progress = 0;
 
         for (var index = 0; index < configs.Length; index++)
         {
-            Console.Clear();
-            Console.WriteLine($"Generating image {index} of iteration {_iteration}...");
-            
-            if (index > 0)
-            {
-                Console.WriteLine(
-                    $"Average time for step of current iteration: {_stopwatch.AverageTime.ToReadableString()}");
-                Console.WriteLine(
-                    $"Remaining time for current iteration: {_stopwatch.RemainingTime.ToReadableString()}");
-            }
-        
             var imageConfig = configs[index];
 
             var resultImage = await GetResultImage(imageConfig);
@@ -87,6 +81,7 @@ public abstract class ImageProcessor
 
             imageConfig.SetImagePath(savePath);
             _stopwatch.NextIteration();
+            Progress = (double) index / configs.Length;
         }
     }
 
