@@ -4,14 +4,11 @@ namespace AuToolbox.Core.Configurations;
 
 public class ConfigsSet
 {
-    private const string DefaultTextToImagePath = "Defaults/DefaultTextToImageRequest.json";
-    private const string DefaultImageToImagePath = "Defaults/DefaultImageToImageRequest.json";
+    private const string DefaultRequestPath = "Defaults/DefaultRequest.json";
 
-    private readonly Config[] _defaults;
     private readonly Config[] _overrides;
 
-    public Config DefaultTextToImage => _defaults[0];
-    public Config DefaultImageToImage => _defaults[1];
+    public Config Default { get; }
 
     public int Iterations => _overrides.Length;
 
@@ -21,11 +18,7 @@ public class ConfigsSet
         var overridesArray = GetOverridesArray(path);
 
         _overrides = CreateOverrides(parentDirectory, overridesArray);
-        _defaults = new[]
-        {
-            GetConfig(DefaultTextToImagePath),
-            GetConfig(DefaultImageToImagePath)
-        };
+        Default = GetConfig(DefaultRequestPath);
     }
 
     public Config OverridesFor(int iteration) => 

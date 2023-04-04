@@ -1,5 +1,6 @@
 ﻿using AuToolbox.Console.Commands;
 using AuToolbox.Core.Configurations;
+using AuToolbox.Core.Functions;
 using ConsoleFramework;
 using Microsoft.Extensions.DependencyInjection;
 using Prompthing.Core;
@@ -39,6 +40,7 @@ FunctionFactory CreateFunctionFactory(IServiceProvider serviceProvider)
         functionFactory.RegisterFunction<TemplateFunction>("template");
         functionFactory.RegisterFunction<BackspaceFunction>("backspace");
         functionFactory.RegisterFunction<PrompthingFunction>("prompthing");
+        functionFactory.RegisterFunction<PreviousResultFunction>("previousResult");
     }
 
     var factory = new FunctionFactory(serviceProvider.GetService<IServiceProvider>());

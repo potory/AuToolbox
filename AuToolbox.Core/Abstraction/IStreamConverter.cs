@@ -5,5 +5,5 @@ namespace AuToolbox.Core.Abstraction;
 public interface IStreamConverter
 {
     MemoryStream RequestToStream(Config request);
-    MemoryStream RequestToStream(Config request, string imagePath);
+    MemoryStream RequestToStream(Config request, string imagePath, string resultTag);
 }

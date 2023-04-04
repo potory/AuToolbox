@@ -17,19 +17,34 @@ public class StandardStreamConverter : IStreamConverter
         return stream;
     }
 
-    public MemoryStream RequestToStream(Config request, string imagePath)
+    public MemoryStream RequestToStream(Config request, string imagePath, string resultTag)
     {
         var stream = new MemoryStream();
         var sw = new StreamWriter(stream);
         string json = request.Json.ToString();
 
-        sw.Write(json[..^3]);
-        sw.Write(",\r\n  \"init_images\": [\"");
-        sw.Write(GetImageString(imagePath));
-        sw.Write("\"]\r\n}");
-        sw.Flush();
+        int start = 0;
+        int insertIndex = json.IndexOf(resultTag, StringComparison.Ordinal);
 
+        if (insertIndex == -1)
+            throw new ArgumentException();
+        
+        var imageString = GetImageString(imagePath);
+
+        while (insertIndex > -1)
+        {
+            sw.Write(json.AsSpan(start, insertIndex - start));
+            sw.Write(imageString);
+
+            start = insertIndex + resultTag.Length;
+            insertIndex = json.IndexOf(resultTag, start, StringComparison.Ordinal);
+        }
+        
+        sw.Write(json.AsSpan(start, json.Length-start));
+
+        sw.Flush();
         stream.Seek(0, SeekOrigin.Begin);
+
         return stream;
     }
 

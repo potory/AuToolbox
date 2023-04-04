@@ -62,7 +62,7 @@ public class ImagesGenerateCommand : IAsyncCommand
         stopwatch.Start();
 
         var configsSet = new ConfigsSet(ConfigPath);
-        var imagesConfigs = CreateConfigs(Count, configsSet.DefaultTextToImage);
+        var imagesConfigs = CreateConfigs(Count, configsSet.Default);
 
         var process = new GenerationProcess(ip, output, _mapper, configsSet, imagesConfigs);
 

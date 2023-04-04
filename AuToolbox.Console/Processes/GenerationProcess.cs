@@ -48,14 +48,14 @@ public class GenerationProcess : IContiguousProcess
         Status = ProcessStatus.Running;
         Message = "Generating initial images...";
 
-        ImageProcessor generator = new ImageGenerator(_ip, _output);
+        ImageProcessor generator = new ImageGenerator(_ip, _output, 0);
         await Generate(generator, 0);
 
         for (int iteration = 1; iteration < _configsSet.Iterations; iteration++)
         {
+            generator = new ImageGenerator(_ip, _output, iteration);
             Message = $"Transforming images (step {iteration})...";
 
-            generator = new ImageTransformer(_ip, _output, iteration);
             await Generate(generator, iteration);
         }
 
