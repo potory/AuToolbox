@@ -28,6 +28,7 @@ app.ServiceCollection
 app.RegisterCommand<PromptGenerateCommand>();
 app.RegisterCommand<PromptTemplateCommand>();
 app.RegisterCommand<ImagesGenerateCommand>();
+app.RegisterCommand<ClearCacheCommand>();
 
 await app.Run(args);
 
