@@ -1,29 +1,17 @@
+# Table of contents
+
 - [AuToolbox](#autoolbox)
-    * [Installation](#installation)
-    * [Usage](#usage)
-        + [Running from Command Prompt/Terminal](#running-from-command-prompt-terminal)
-    * [Commands](#commands)
-    * [Configuration](#configuration)
+    - [Installation](#installation)
+    - [Usage](#usage)
+    - [Commands](#commands)
+    - [Configuration](#configuration)
 - [Macroses](#macroses)
-    * [Basic Macroses](#basic-macroses)
-        + [#mult and #multiply](#-mult-and--multiply)
-        + [#eight](#-eight)
-        + [#int](#-int)
-        + [#replace](#-replace)
-        + [#linefrom](#-linefrom)
-        + [#oneof](#-oneof)
-        + [#append](#-append)
-    * [Config macroses](#config-macroses)
-        + [#previousResult](#-previousresult)
-        + [#prompthing](#-prompthing)
-        + [#source](#-source)
+    - [Basic Macroses](#basic-macroses)
+    - [Config macroses](#config-macroses)
 - [Prompthing](#prompthing)
-    * [Prompthing File Format](#prompthing-file-format)
-        + [Templates](#templates)
-    * [Prompthing macroses](#prompthing-macroses)
-    * [Example](#example)
-    * [Prompthing macroses](#prompthing-macroses-1)
-        + [#template, #temp, and #t](#-template---temp--and--t)
+    - [Prompthing File Format](#prompthing-file-format)
+    - [Example](#example)
+    - [Prompthing macroses](#prompthing-macroses)
 
 # AuToolbox
 AuToolbox is a command-line application that automates the process of image generation with the AUTOMATIC1111 Stable Diffusion API. It allows users to define a series of generation steps by configuring requests in a JSON file, with support for SonScript macros language. The generated images are saved in a folder corresponding to the index of the generation step, and can be used as input for subsequent steps.
@@ -208,7 +196,7 @@ Categories are collections of values that can be used in templates. Each categor
 
 Here's an example of a Categories section:
 
-## Prompthing macroses
+### Categories
 
 ```json
 "categories": [
