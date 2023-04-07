@@ -1,11 +1,15 @@
 ﻿[
   {
     "prompt": "a cat",
+    "negative_prompt": "bad quality",
     "width": 512,
-    "height": 640
+    "height": 512
   },
   {
+    "init_images": [
+      "#previousResult()"
+    ],
     "width": 1024,
-    "height": 1280
+    "height": 1024
   }
 ]
