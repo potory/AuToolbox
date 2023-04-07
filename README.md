@@ -191,12 +191,10 @@ Each template has the following properties:
 
 In the example above, the sourceTemplate template references the location template using the #t() macro.
 
-Categories
+### Categories
 Categories are collections of values that can be used in templates. Each category has a name and an array of values.
 
 Here's an example of a Categories section:
-
-### Categories
 
 ```json
 "categories": [
