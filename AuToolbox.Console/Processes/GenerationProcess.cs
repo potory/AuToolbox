@@ -17,6 +17,7 @@ public class GenerationProcess : IContiguousProcess
     private readonly Config[] _configs;
     private readonly ConfigsSet _configsSet;
     private readonly ConfigMapper _mapper;
+    private readonly CancellationTokenSource _cancellationTokenSource;
 
     private const string ProcessName = "Image Generation";
     private const string InitialMessage = "Preparing for image generation...";
@@ -41,6 +42,7 @@ public class GenerationProcess : IContiguousProcess
         _configsSet = configsSet;
         _configs = configs;
         _mapper = mapper;
+        _cancellationTokenSource = new CancellationTokenSource();
     }
 
     public async Task RunAsync()
@@ -49,14 +51,22 @@ public class GenerationProcess : IContiguousProcess
         Message = "Generating initial images...";
 
         ImageProcessor generator = new ImageGenerator(_ip, _output, 0);
-        await Generate(generator, 0);
+        await Generate(generator, 0, _cancellationTokenSource.Token);
 
-        for (int iteration = 1; iteration < _configsSet.Iterations; iteration++)
+        for (int iteration = 1; iteration < _configsSet.Iterations && !IsCancellationRequested(); iteration++)
         {
             generator = new ImageGenerator(_ip, _output, iteration);
             Message = $"Transforming images (step {iteration})...";
 
-            await Generate(generator, iteration);
+            await Generate(generator, iteration, _cancellationTokenSource.Token);
+        }
+
+        if (IsCancellationRequested())
+        {
+            Progress = 0;
+            Message = "Image generation canceled.";
+            Status = ProcessStatus.Failed;
+            return;
         }
 
         Progress = 1;
@@ -64,27 +74,39 @@ public class GenerationProcess : IContiguousProcess
         Status = ProcessStatus.Completed;
     }
 
+
+    public void Cancel() => _cancellationTokenSource.Cancel();
+
     /// <summary>
     /// Generates images using the specified <see cref="ImageProcessor"/> and configuration overrides.
     /// </summary>
     /// <param name="generator">The <see cref="ImageProcessor"/> to use for generating the images.</param>
     /// <param name="iteration">The current iteration of the generation process.</param>
-    private async Task Generate(ImageProcessor generator, int iteration)
+    /// <param name="cancellationToken"></param>
+    private async Task Generate(ImageProcessor generator, int iteration, CancellationToken cancellationToken)
     {
         var step = 1 /(double) _configsSet.Iterations;
         var overrides = _configsSet.OverridesFor(iteration);
 
-        foreach (var config in _configs)
+        try
         {
-            MapConfig(config, overrides);
+            foreach (var config in _configs)
+            {
+                MapConfig(config, overrides);
+            }
+        }
+        catch (Exception e)
+        {
+            System.Console.WriteLine(e);
+            throw;
         }
 
-        var task = generator.Run(_configs);
+        var task = generator.Run(_configs, cancellationToken);
 
         while (!task.IsCompleted)
         {
             Progress = iteration * step + generator.Progress * step;
-            await Task.Delay(500);
+            await Task.Delay(500, cancellationToken);
         }
 
         Progress = (iteration + 1) * step;
@@ -104,4 +126,6 @@ public class GenerationProcess : IContiguousProcess
 
         request.Json.CopyFields(overrides.Json);
     }
+
+    private bool IsCancellationRequested() => _cancellationTokenSource.IsCancellationRequested;
 }

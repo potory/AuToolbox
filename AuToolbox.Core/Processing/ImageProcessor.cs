@@ -65,12 +65,13 @@ public abstract class ImageProcessor
     /// Runs the image processing for the given configurations.
     /// </summary>
     /// <param name="configs">Array of configurations.</param>
-    public async Task Run(Config[] configs)
+    /// <param name="cancellationToken"></param>
+    public async Task Run(Config[] configs, CancellationToken cancellationToken)
     {
         _stopwatch.Start(configs.Length);
         Progress = 0;
 
-        for (var index = 0; index < configs.Length; index++)
+        for (var index = 0; index < configs.Length && !cancellationToken.IsCancellationRequested; index++)
         {
             var imageConfig = configs[index];
 
