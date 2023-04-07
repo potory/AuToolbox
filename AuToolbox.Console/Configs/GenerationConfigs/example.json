@@ -1,11 +1,11 @@
-﻿{
-  "iteration1": {
+﻿[
+  {
     "prompt": "a cat",
     "width": 512,
     "height": 640
   },
-  "iteration2": {
+  {
     "width": 1024,
     "height": 1280
   }
-}
+]

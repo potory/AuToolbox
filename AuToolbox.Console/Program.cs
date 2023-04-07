@@ -1,4 +1,6 @@
 ﻿using AuToolbox.Console.Commands;
+using AuToolbox.Core.Configurations;
+using AuToolbox.Core.Functions;
 using ConsoleFramework;
 using Microsoft.Extensions.DependencyInjection;
 using Prompthing.Core;
@@ -7,8 +9,8 @@ using Prompthing.Core.Templates;
 using SonScript.Core;
 
 const string welcomeMessage =
-    "Welcome to AuToolbox! We're thrilled to have you here.\n" +
-    "Our application is designed to help you automate the image-generation process with AUTOMATIC1111 StableDiffusion API.\n" +
+    "Welcome to AuToolbox!\n" +
+    "This application is designed to help you automate the image-generation process with AUTOMATIC1111 StableDiffusion API.\n" +
     "To get started, simply type in a command and let AuToolbox handle the rest.\n" +
     "If you're ever unsure about what commands are available, just type \"help\" to access a list of available commands.";
 
@@ -20,11 +22,13 @@ app.ServiceCollection
     .AddSingleton<FunctionParser>()
     .AddSingleton<ReferencePool>()
     .AddSingleton<DatasetCompiler>()
+    .AddTransient<ConfigMapper>()
     .AddSingleton(CreateFunctionFactory);
 
 app.RegisterCommand<PromptGenerateCommand>();
 app.RegisterCommand<PromptTemplateCommand>();
 app.RegisterCommand<ImagesGenerateCommand>();
+app.RegisterCommand<ClearCacheCommand>();
 
 await app.Run(args);
 
@@ -37,6 +41,7 @@ FunctionFactory CreateFunctionFactory(IServiceProvider serviceProvider)
         functionFactory.RegisterFunction<TemplateFunction>("template");
         functionFactory.RegisterFunction<BackspaceFunction>("backspace");
         functionFactory.RegisterFunction<PrompthingFunction>("prompthing");
+        functionFactory.RegisterFunction<PreviousResultFunction>("previousResult");
     }
 
     var factory = new FunctionFactory(serviceProvider.GetService<IServiceProvider>());

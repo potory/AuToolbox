@@ -79,9 +79,20 @@ public class ConfigMapper
         };
     }
 
-    private static T GetValue<T>(JToken token) => 
-        (T)((JValue)token).Value;
+    private object GetSource(JValue value)
+    {
+        var path = GetConfigValuePath(value);
 
-    private object GetSource(JValue value) => 
-        ((JValue) _source?.Json[value.Path])?.Value;
+        var token = _source.Json.SelectToken(path);
+        return ((JValue)token)?.Value;
+    }
+
+    private static string GetConfigValuePath(JValue value)
+    {
+        var path = value.Path;
+        int dot = path.IndexOf('.') + 1;
+        path = path.Substring(dot, path.Length - dot);
+
+        return path;
+    }
 }
