@@ -71,10 +71,21 @@ public class ImagesGenerateCommand : IAsyncCommand
         stopwatch.Stop();
 
         System.Console.Clear();
-        System.Console.WriteLine(GetCompleteString(), configsSet.Iterations * imagesConfigs.Length, stopwatch.Elapsed.ToReadableString());
+
+        if (process.Status == ProcessStatus.Completed)
+        {
+            var totalImages = configsSet.Iterations * imagesConfigs.Length;
+            var elapsedString = stopwatch.Elapsed.ToReadableString();
+
+            System.Console.WriteLine("Generation task completed successfully.");
+            System.Console.WriteLine($"\nTotal images generated: {totalImages}");
+            System.Console.WriteLine($"Total time taken: {elapsedString}");
+        }
+        else if (process.Status == ProcessStatus.Canceled)
+        {
+            System.Console.WriteLine($"Images generation was cancelled on {process.Progress:P} due to user request.");
+        }
     }
-    private static string GetCompleteString() => 
-        "Generation task completed successfully.\n\nTotal images generated: {0}\nTotal time taken: {1}";
 
     private static Config[] CreateConfigs(int count, Config defaultTextToImage)
     {

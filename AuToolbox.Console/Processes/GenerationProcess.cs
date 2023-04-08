@@ -61,21 +61,18 @@ public class GenerationProcess : IContiguousProcess
             await Generate(generator, iteration, _cancellationTokenSource.Token);
         }
 
-        if (IsCancellationRequested())
-        {
-            Progress = 0;
-            Message = "Image generation canceled.";
-            Status = ProcessStatus.Failed;
-            return;
-        }
-
         Progress = 1;
         Message = "Image generation completed.";
         Status = ProcessStatus.Completed;
     }
 
 
-    public void Cancel() => _cancellationTokenSource.Cancel();
+    public void Cancel()
+    {
+        Status = ProcessStatus.Canceled;
+        Message = "Image generation canceled.";
+        _cancellationTokenSource.Cancel();
+    }
 
     /// <summary>
     /// Generates images using the specified <see cref="ImageProcessor"/> and configuration overrides.
