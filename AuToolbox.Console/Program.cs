@@ -42,6 +42,7 @@ FunctionFactory CreateFunctionFactory(IServiceProvider serviceProvider)
         functionFactory.RegisterFunction<BackspaceFunction>("backspace");
         functionFactory.RegisterFunction<PrompthingFunction>("prompthing");
         functionFactory.RegisterFunction<PreviousResultFunction>("previousResult");
+        functionFactory.RegisterFunction<MultipleFromCategory>("multcat");
     }
 
     var factory = new FunctionFactory(serviceProvider.GetService<IServiceProvider>());
