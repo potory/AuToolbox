@@ -8,16 +8,18 @@ namespace AuToolbox.Core.Processing;
 /// </summary>
 public abstract class ImageProcessor
 {
+    public bool SavePrompts { get; set; }
+
     /// <summary>
     /// Index of iteration.
     /// </summary>
     private readonly int _iteration;
-    
+
     /// <summary>
     /// Path for saving the output images.
     /// </summary>
     private readonly string _outputPath;
-    
+
     /// <summary>
     /// Stopwatch for measuring elapsed time.
     /// </summary>
@@ -27,12 +29,12 @@ public abstract class ImageProcessor
     /// IP address for the image processing server.
     /// </summary>
     protected readonly string Ip;
-    
+
     /// <summary>
     /// Request handler for single image processing.
     /// </summary>
     protected readonly SingleImageRequestHandler RequestHandler;
-    
+
     /// <summary>
     /// Converter for stream.
     /// </summary>
@@ -75,15 +77,28 @@ public abstract class ImageProcessor
         {
             var imageConfig = configs[index];
 
+            if (!string.IsNullOrEmpty(imageConfig.ImagePath) && !File.Exists(imageConfig.ImagePath))
+            {
+                continue;
+            }
+
             var resultImage = await GetResultImage(imageConfig);
             var savePath = GetSavePath(_outputPath, _iteration, index);
 
             await WriteResultImageToFile(resultImage, savePath);
-
+            
             imageConfig.SetImagePath(savePath);
             _stopwatch.NextIteration();
 
             Progress = (double) (index+1) / configs.Length;
+            
+            if (SavePrompts)
+            {
+                var promptPath = savePath.Substring(0, savePath.Length - 3) + "txt";
+                var prompt = imageConfig.Json["prompt"].ToString();
+                
+                await File.WriteAllTextAsync(promptPath, prompt, cancellationToken);
+            }
         }
     }
 

@@ -26,6 +26,8 @@ public class GenerationProcess : IContiguousProcess
     public double Progress { get; private set; }
     public string Message { get; private set; } = InitialMessage;
     public ProcessStatus Status { get; private set; }
+    public bool SavePrompts { get; set; }
+    public bool Pausing { get; set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="GenerationProcess"/> class with the specified parameters.
@@ -51,13 +53,22 @@ public class GenerationProcess : IContiguousProcess
         Message = "Generating initial images...";
 
         ImageProcessor generator = new ImageGenerator(_ip, _output, 0);
+        generator.SavePrompts = SavePrompts;
+
         await Generate(generator, 0, _cancellationTokenSource.Token);
 
         for (int iteration = 1; iteration < _configsSet.Iterations && !IsCancellationRequested(); iteration++)
         {
+            if (Pausing)
+            {
+                System.Console.WriteLine("\nPress any key to continue for next step...");
+                System.Console.ReadKey();
+            }
+            
             generator = new ImageGenerator(_ip, _output, iteration);
+            generator.SavePrompts = SavePrompts;
+            
             Message = $"Transforming images (step {iteration})...";
-
             await Generate(generator, iteration, _cancellationTokenSource.Token);
         }
 
@@ -95,6 +106,13 @@ public class GenerationProcess : IContiguousProcess
         catch (Exception e)
         {
             System.Console.WriteLine(e);
+
+            if (!Directory.Exists("Logs"))
+            {
+                Directory.CreateDirectory("Logs");
+            }
+
+            File.AppendAllText($@"Logs\log-{Guid.NewGuid()}.txt", e.ToString());
             throw;
         }
 

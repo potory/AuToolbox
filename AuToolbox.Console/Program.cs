@@ -43,6 +43,7 @@ FunctionFactory CreateFunctionFactory(IServiceProvider serviceProvider)
         functionFactory.RegisterFunction<PrompthingFunction>("prompthing");
         functionFactory.RegisterFunction<PreviousResultFunction>("previousResult");
         functionFactory.RegisterFunction<MultipleFromCategory>("multcat");
+        functionFactory.RegisterFunction<EachFromCategory>("eachcat");
     }
 
     var factory = new FunctionFactory(serviceProvider.GetService<IServiceProvider>());

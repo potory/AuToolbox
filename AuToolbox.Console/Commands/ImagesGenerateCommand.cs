@@ -31,6 +31,12 @@ public class ImagesGenerateCommand : IAsyncCommand
     [Argument(Name = "output", Description = "The output directory for generated images. If not provided, the default output directory will be used.", Required = false)]
     [ExampleValue("\"Output\\Images\"")]
     public string Output { get; set; }
+    
+    [Argument(Name = "savePrompts", Description = "The output directory for generated images. If not provided, the default output directory will be used.", Required = false)]
+    public bool SavePrompts { get; set; }
+    
+    [Argument(Name = "pausing", Description = "The output directory for generated images. If not provided, the default output directory will be used.", Required = false)]
+    public bool Pausing { get; set; }
 
     public ImagesGenerateCommand(IContiguousProcessRunner processRunner, ConfigMapper mapper)
     {
@@ -65,6 +71,8 @@ public class ImagesGenerateCommand : IAsyncCommand
         var imagesConfigs = CreateConfigs(Count, configsSet.Default);
 
         var process = new GenerationProcess(ip, output, _mapper, configsSet, imagesConfigs);
+        process.SavePrompts = SavePrompts;
+        process.Pausing = Pausing;
 
         await _processRunner.RunProcessAsync(process);
 
